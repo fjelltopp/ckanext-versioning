@@ -12,6 +12,7 @@ versioning = Blueprint('versioning', __name__)
 
 def show(package_id, revision_ref=None):
     pkg_dict = _get_package(package_id, revision_ref)
+    logging.warning(pformat(pkg_dict))
     toolkit.c.pkg_dict = pkg_dict
     return toolkit.render('package/read.html')
 
