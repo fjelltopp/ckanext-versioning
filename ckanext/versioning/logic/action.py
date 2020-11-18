@@ -6,7 +6,7 @@ import re
 
 from ckan import model as core_model
 from ckan.common import request
-from ckan.logic.action.get import package_show as core_package_show
+from ckanext.restricted.action import restricted_package_show as core_package_show
 from ckan.logic.action.get import resource_show as core_resource_show
 from ckan.plugins import toolkit
 from metastore.backend import exc
@@ -15,8 +15,6 @@ from six.moves.urllib import parse
 from ckanext.versioning.common import create_author_from_context, exception_mapper, get_metastore_backend, tag_to_dict
 from ckanext.versioning.datapackage import frictionless_to_dataset, update_ckan_dict
 from ckanext.versioning.logic import helpers as h
-
-from pprint import pformat
 
 log = logging.getLogger(__name__)
 
@@ -211,13 +209,10 @@ def package_show_revision(context, data_dict):
     :returns: A package dict
     :rtype: dict
     """
-    log.warning("PACKAGE SHOW")
     revision_ref = _get_revision_ref(data_dict)
-    log.warning(revision_ref)
     if revision_ref is None:
         result = core_package_show(context, data_dict)
     else:
-        log.warning("GETTING REVISION REF")
         result = _get_package_in_revision(context, data_dict, revision_ref)
 
     return result
@@ -303,15 +298,11 @@ def _get_package_in_revision(context, data_dict, revision_id):
     """Internal implementation of package_show_revision
     """
     result = core_package_show(context, data_dict)
-    log.warning("REVISION ID: {}".format(revision_id))
     if revision_id:
         backend = get_metastore_backend()
         dataset_name = _get_dataset_name(data_dict.get('id'))
         pkg_info = backend.fetch(dataset_name, revision_id)
-        log.warning("PACKAGE INFO")
-        log.warning(pformat(dir(pkg_info)))
         dataset = frictionless_to_dataset(pkg_info.package)
-        log.warning(pformat(dataset))
         result = update_ckan_dict(result, dataset)
         for resource in result.get('resources', []):
             resource['datastore_active'] = False

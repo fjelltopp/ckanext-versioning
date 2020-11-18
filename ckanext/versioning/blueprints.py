@@ -2,8 +2,6 @@ from ckan import model
 from ckan.lib import helpers as h
 from ckan.plugins import toolkit
 from flask import Blueprint
-import logging
-from pprint import pformat
 
 from ckanext.versioning.logic import helpers
 
@@ -12,7 +10,6 @@ versioning = Blueprint('versioning', __name__)
 
 def show(package_id, revision_ref=None):
     pkg_dict = _get_package(package_id, revision_ref)
-    logging.warning(pformat(pkg_dict))
     toolkit.c.pkg_dict = pkg_dict
     return toolkit.render('package/read.html')
 
