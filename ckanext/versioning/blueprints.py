@@ -2,6 +2,8 @@ from ckan import model
 from ckan.lib import helpers as h
 from ckan.plugins import toolkit
 from flask import Blueprint
+import logging
+from pprint import pformat
 
 from ckanext.versioning.logic import helpers
 
@@ -50,7 +52,9 @@ def resource_show(package_id, resource_id, revision_ref=None):
 
     template_vars = {'resource_views': resource_views,
                      'current_resource_view': current_resource_view,
-                     'dataset_type': pkg_dict['type'] or 'dataset'}
+                     'dataset_type': pkg_dict['type'] or 'dataset',
+                     'package': pkg_dict,
+                     'resource': resource}
 
     return toolkit.render('package/resource_read.html',
                           extra_vars=template_vars)

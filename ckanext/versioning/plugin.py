@@ -110,20 +110,20 @@ class PackageVersioningPlugin(plugins.SingletonPlugin,
         GitHub repository a store the package dict in a datapackage.json file.
         """
 
-        if pkg_dict['type'] == 'dataset':
-            datapackage = dataset_to_frictionless(pkg_dict)
-            backend = get_metastore_backend()
-            author = create_author_from_context(context)
-            pkg_info = backend.create(
-                pkg_dict['name'],
-                datapackage,
-                author=author
-                )
+        #if pkg_dict['type'] == 'dataset':
+        datapackage = dataset_to_frictionless(pkg_dict)
+        backend = get_metastore_backend()
+        author = create_author_from_context(context)
+        pkg_info = backend.create(
+            pkg_dict['name'],
+            datapackage,
+            author=author
+            )
 
-            log.info(
-                'Package {} created correctly. Revision {} created.'.format(
-                 pkg_info.package_id, pkg_info.revision
-                ))
+        log.info(
+            'Package {} created correctly. Revision {} created.'.format(
+             pkg_info.package_id, pkg_info.revision
+            ))
 
         return pkg_dict
 
@@ -133,24 +133,24 @@ class PackageVersioningPlugin(plugins.SingletonPlugin,
         After updating the package it calls metastore-lib to update the
         datapackage.json file in the GitHub repository.
         """
-        if pkg_dict['type'] == 'dataset':
-            # We need to get a complete dict to also update resources data.
-            # We need to save tracking_summary, required for templates.
-            pkg_dict = toolkit.get_action('package_show')({}, {
-                'id': pkg_dict['id'],
-                'include_tracking': True
-                })
 
-            datapackage = dataset_to_frictionless(pkg_dict)
-            backend = get_metastore_backend()
-            author = create_author_from_context(context)
-            pkg_info = backend.update(
-                pkg_dict['name'], datapackage, author=author)
+        # We need to get a complete dict to also update resources data.
+        # We need to save tracking_summary, required for templates.
+        pkg_dict = toolkit.get_action('package_show')({}, {
+            'id': pkg_dict['id'],
+            'include_tracking': True
+            })
 
-            log.info(
-                'Package {} updated correctly. Revision {} created.'.format(
-                 pkg_info.package_id, pkg_info.revision
-                ))
+        datapackage = dataset_to_frictionless(pkg_dict)
+        backend = get_metastore_backend()
+        author = create_author_from_context(context)
+        pkg_info = backend.update(
+            pkg_dict['name'], datapackage, author=author)
+
+        log.info(
+            'Package {} updated correctly. Revision {} created.'.format(
+             pkg_info.package_id, pkg_info.revision
+            ))
 
         return pkg_dict
 

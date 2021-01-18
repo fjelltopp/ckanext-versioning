@@ -16,6 +16,8 @@ from ckanext.versioning.common import create_author_from_context, exception_mapp
 from ckanext.versioning.datapackage import frictionless_to_dataset, update_ckan_dict
 from ckanext.versioning.logic import helpers as h
 
+from pprint import pformat
+
 log = logging.getLogger(__name__)
 
 
