@@ -2,8 +2,6 @@ from ckan import model
 from ckan.lib import helpers as h
 from ckan.plugins import toolkit
 from flask import Blueprint
-import logging
-from pprint import pformat
 
 from ckanext.versioning.logic import helpers
 
