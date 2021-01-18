@@ -142,9 +142,6 @@ class PackageVersioningPlugin(plugins.SingletonPlugin,
             })
 
         datapackage = dataset_to_frictionless(pkg_dict)
-        log.warning("===================================")
-        log.warning("STORING IN METASTORE")
-        log.warning(datapackage)
         backend = get_metastore_backend()
         author = create_author_from_context(context)
         pkg_info = backend.update(
