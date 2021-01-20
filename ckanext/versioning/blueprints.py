@@ -11,7 +11,7 @@ versioning = Blueprint('versioning', __name__)
 def show(package_id, revision_ref=None):
     pkg_dict = _get_package(package_id, revision_ref)
     toolkit.c.pkg_dict = pkg_dict
-    return toolkit.render('package/read.html')
+    return toolkit.render('package/read.html', extra_vars={'pkg_dict': pkg_dict})
 
 
 def resource_show(package_id, resource_id, revision_ref=None):
@@ -52,6 +52,7 @@ def resource_show(package_id, resource_id, revision_ref=None):
                      'current_resource_view': current_resource_view,
                      'dataset_type': pkg_dict['type'] or 'dataset',
                      'package': pkg_dict,
+                     'pkg_dict': pkg_dict,
                      'resource': resource}
 
     return toolkit.render('package/resource_read.html',
